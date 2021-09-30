@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 from flask import Flask
 import requests
 import json
@@ -18,7 +18,7 @@ def identify_to_central_server() -> bool:
     global known_botnets
     global botnet_ip
 
-    response = requests.post("http://central_server_url")
+    response = requests.get("http://central_server_url")
     if response.status_code == 200:
         # Successfully identified, save already known botnets
         data = json.loads(response.text)
@@ -28,13 +28,16 @@ def identify_to_central_server() -> bool:
     
     return False
 
-def identify_to_other_botnets() -> bool:
+def identify_to_other_botnets() -> Tuple(int, int):
     """
     Connect to other botnets
     Remove from known_botnets unreachable IPs
     """
     global known_botnets
     global botnet_ip
+
+    to_reach = len(known_botnets)
+    reached = 0
 
     for ip in known_botnets:
         # Do not connect to itself
@@ -43,6 +46,8 @@ def identify_to_other_botnets() -> bool:
             if response.status_code != 200:
                 # If IP is unreachable, remove it from known botnets
                 known_botnets = filter(lambda x: x != ip, known_botnets)
+    
+    return to_reach, reached
 
 # Http route definitions
 @app.route('/')
