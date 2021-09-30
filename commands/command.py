@@ -3,8 +3,8 @@ import uuid
 from enum import Enum
 
 class CommandType(Enum):
-    DDOS = 0,
-    RCE = 1
+    DDOS = 'ddos',
+    RCE = 'rce'
 
 class Command(ABC):
     def __init__(self, type: CommandType) -> None:
