@@ -25,7 +25,6 @@ class CommandDDoS(Command):
         print('Starting DDoS on {} with {} threads'.format(self.target_ip, self.nb_threads))
         for _ in range(self.nb_threads):
             thread = threading.Thread(target=self.attack)
-            thread.ra
             self.threads.append(thread)
             thread.start()
 

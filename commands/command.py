@@ -7,9 +7,9 @@ class CommandType:
     RCE = 'rce'
 
 class Command(ABC):
-    def __init__(self, type: CommandType) -> None:
+    def __init__(self, type: str) -> None:
         self.id = uuid.uuid4()
-        self.type = CommandType
+        self.type = str
 
     @abstractmethod
     def process() -> None:
