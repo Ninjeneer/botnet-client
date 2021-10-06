@@ -5,7 +5,7 @@ import threading
 
 class CommandDDoS(Command):
     def __init__(self, target_ip: str, target_port: str, fake_ip: str, nb_threads: int = 30) -> None:
-        super().__init__(CommandType.DDoS)
+        super().__init__(CommandType.DDoS, False)
         self.target_ip = target_ip
         self.target_port = int(target_port)
         self.fake_ip = fake_ip
