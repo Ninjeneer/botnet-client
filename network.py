@@ -15,7 +15,7 @@ command_queue = Queue()
 
 
 def start_client() -> None:
-    socket_client.connect("ws://localhost:5000")
+    socket_client.connect("ws://host.docker.internal:5000")
 
 # SocketIO event definitions
 
