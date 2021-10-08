@@ -29,14 +29,9 @@ python app.py
 
 ## Running with Docker
 
-Build the image
-```bash
-docker build -t botnet-client .
-```
-
 Run the container
 ```bash
-docker run -e CENTRAL_SERVER_IP=XXXXXXX -e CENTRAL_SERVER_PORT=XXXXXXX botnet-client -d
+docker run -e CENTRAL_SERVER_IP=XXXXXXX -e CENTRAL_SERVER_PORT=XXXXXXX ninjeneer/dev:botnet-client -d
 ```
 
 *For localhost usage, use **host.docker.internal** as CENTRAL_SERVER_IP*
