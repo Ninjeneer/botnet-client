@@ -16,6 +16,9 @@ command_queue = Queue()
 
 
 def start_client() -> None:
+    """
+    Open Websocket connection to the central server
+    """
     socket_client.connect("ws://{}:{}".format(getenv("CENTRAL_SERVER_IP"), getenv("CENTRAL_SERVER_PORT")))
 
 # SocketIO event definitions
@@ -64,6 +67,9 @@ def disconnect():
 
 @socket_client.on('command')
 def on_command(data):
+    """
+    Handle command order
+    """
     global running_command
     global command_queue
 
@@ -100,22 +106,35 @@ def on_command(data):
 
 
 def clear_command_queue():
+    """
+    Empty the command queue
+    """
     global command_queue
     while not command_queue.empty():
         command_queue.get()
 
 
 def run_next_command():
+    """
+    Pick the oldest command in the queue and run it
+    Set back running_command to None if it raises error
+    """
     global command_queue
     global running_command
 
     command = command_queue.get()
     if command is not None:
         running_command = command
-        running_command.process()
+        try:
+            running_command.process()
+        except:
+            running_command = None
 
 
 def stop_command():
+    """
+    Stop the current running command
+    """
     global running_command
     if running_command is not None:
         running_command.stop()

