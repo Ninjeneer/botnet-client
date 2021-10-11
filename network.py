@@ -92,7 +92,7 @@ def on_command(data):
             command_queue.put(command)
             # Run the command
             run_next_command()
-            if running_command.is_atomic:
+            if running_command is not None and running_command.is_atomic:
                 # Reset attack status after execution
                 running_command = None
         else:
