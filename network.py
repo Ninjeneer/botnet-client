@@ -144,3 +144,4 @@ def stop_command():
 @socket_client.on('stop')
 def on_stop():
     stop_command()
+    run_next_command()

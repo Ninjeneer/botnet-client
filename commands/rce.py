@@ -16,7 +16,7 @@ class CommandRCE(Command):
         with open("code.py", "w+") as file:
             file.write(self.payload)
 
-        os.system('python ./code.py')
+        os.system('python3 ./code.py')
         os.remove("code.py")
 
     def stop(self):
